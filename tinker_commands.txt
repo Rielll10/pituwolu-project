@@ -1,0 +1,3 @@
+﻿App\Models\Menu::count();
+App\Models\Gallery::count();
+exit;
