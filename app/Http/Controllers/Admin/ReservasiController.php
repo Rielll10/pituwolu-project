@@ -16,6 +16,14 @@ class ReservasiController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('order_id', 'like', "%{$search}%");
+            });
+        }
+
         $reservations = $query->paginate(10);
         return view('admin.reservasi.index', compact('reservations'));
     }

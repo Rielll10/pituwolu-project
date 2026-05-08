@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\MenuController as AdminMenuController;
 use App\Http\Controllers\Admin\ReservasiController as AdminReservasiController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Admin\TransaksiController as AdminTransaksiController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +24,13 @@ Route::get('/reservasi', fn () => view('reservasi'));
 
 // Frontend POST routes
 Route::post('/reservasi', [ReservasiController::class, 'store'])->name('reservasi.store');
+Route::get('/reservasi/finish', [ReservasiController::class, 'finish'])->name('reservasi.finish');
 Route::post('/review', [ReviewController::class, 'store'])->name('review.store');
+
+// Midtrans Webhook (tanpa CSRF)
+Route::post('/midtrans/webhook', [ReservasiController::class, 'webhook'])
+    ->name('midtrans.webhook')
+    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
 // ─── Admin Auth ───────────────────────────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -64,5 +71,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/event/{event}/edit', [AdminEventController::class, 'edit'])->name('event.edit');
         Route::put('/event/{event}', [AdminEventController::class, 'update'])->name('event.update');
         Route::delete('/event/{event}', [AdminEventController::class, 'destroy'])->name('event.destroy');
+
+        // Reservasi
+        Route::get('/reservasi', [AdminReservasiController::class, 'index'])->name('reservasi.index');
+        Route::patch('/reservasi/{reservation}/status', [AdminReservasiController::class, 'updateStatus'])->name('reservasi.updateStatus');
+        Route::delete('/reservasi/{reservation}', [AdminReservasiController::class, 'destroy'])->name('reservasi.destroy');
+
+        // Transaksi (Payment)
+        Route::get('/transaksi', [AdminTransaksiController::class, 'index'])->name('transaksi.index');
     });
 });

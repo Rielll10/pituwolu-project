@@ -141,6 +141,18 @@
             <span class="text-sm">Promos & Events</span>
         </a>
 
+        <a href="{{ route('admin.reservasi.index') }}"
+           class="{{ request()->routeIs('admin.reservasi.*') ? 'bg-sidebar-active text-white font-semibold border-l-4 border-pit-accent' : 'text-sidebar-text hover:text-[#F5F5F0] hover:bg-sidebar-hover border-l-4 border-transparent' }} rounded-lg mx-2 my-0.5 px-4 py-3 flex items-center gap-3 transition-all duration-200 active:scale-[0.98]">
+            <span class="material-symbols-outlined {{ request()->routeIs('admin.reservasi.*') ? 'fill' : '' }}">event_seat</span>
+            <span class="text-sm">Reservasi</span>
+        </a>
+
+        <a href="{{ route('admin.transaksi.index') }}"
+           class="{{ request()->routeIs('admin.transaksi.*') ? 'bg-sidebar-active text-white font-semibold border-l-4 border-pit-accent' : 'text-sidebar-text hover:text-[#F5F5F0] hover:bg-sidebar-hover border-l-4 border-transparent' }} rounded-lg mx-2 my-0.5 px-4 py-3 flex items-center gap-3 transition-all duration-200 active:scale-[0.98]">
+            <span class="material-symbols-outlined {{ request()->routeIs('admin.transaksi.*') ? 'fill' : '' }}">payments</span>
+            <span class="text-sm">Transaksi</span>
+        </a>
+
         {{-- Divider + Lihat Website --}}
         <div class="mt-8 px-4">
             <div class="h-px w-full bg-sidebar-border mb-4"></div>

@@ -15,7 +15,7 @@
                     Setiap Langkah, Menuai Kisah <br />
                     <span class="serif-italic font-light"></span>
                 </h1>
-                <p class="text-emerald-50/80 text-base sm:text-lg md:text-xl font-body max-w-lg mb-6 md:mb-10 leading-relaxed">
+                <p class="text-[#F5E6D3] drop-shadow-md text-base sm:text-lg md:text-xl font-body max-w-lg mb-6 md:mb-10 leading-relaxed font-medium">
                    Tempat sederhana untuk berbagi cerita bersama dan merangkai makna menjadi sebuah kisah yang indah
                 </p>
                 <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">

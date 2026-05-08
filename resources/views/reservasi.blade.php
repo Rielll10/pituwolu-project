@@ -13,7 +13,28 @@
         <div class="text-center mb-8 md:mb-16 lg:mb-24">
             <span class="text-secondary font-bold tracking-[0.2em] md:tracking-[0.3em] font-label uppercase text-xs mb-3 md:mb-4 block">Layanan Pituwolu</span>
             <h1 class="text-2xl sm:text-3xl md:text-6xl font-bold font-headline text-on-surface">Reservasi Meja</h1>
-            <p class="text-on-surface-variant font-body mt-4 md:mt-6 max-w-2xl mx-auto text-sm md:text-lg leading-relaxed shadow-sm px-2">Kami siap menyambut kedatangan Anda. Selesaikan pesanan Anda dan tentukan waktu kunjungan terbaik Anda untuk pengalaman tak terlupakan.</p>
+            <p class="text-on-surface-variant font-body mt-4 md:mt-6 max-w-2xl mx-auto text-sm md:text-lg leading-relaxed shadow-sm px-2">Isi formulir, selesaikan pembayaran, dan reservasi Anda otomatis dikonfirmasi. Simpel, aman, dan terpercaya.</p>
+        </div>
+
+        <!-- Alur Reservasi -->
+        <div class="w-full max-w-3xl mx-auto mb-10 md:mb-14">
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm shadow-lg shadow-primary/30">1</div>
+                    <p class="text-xs font-semibold text-on-surface font-label">Isi Formulir</p>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-10 h-10 rounded-full bg-secondary/20 text-secondary flex items-center justify-center font-bold text-sm">2</div>
+                    <p class="text-xs font-semibold text-on-surface-variant font-label">Bayar Sekarang</p>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-10 h-10 rounded-full bg-secondary/20 text-secondary flex items-center justify-center font-bold text-sm">3</div>
+                    <p class="text-xs font-semibold text-on-surface-variant font-label">Konfirmasi WA</p>
+                </div>
+            </div>
+            <div class="relative mt-4">
+                <div class="absolute top-1/2 left-[16.5%] right-[16.5%] h-0.5 bg-gradient-to-r from-primary via-secondary/40 to-secondary/20 -translate-y-1/2"></div>
+            </div>
         </div>
 
         <div class="w-full max-w-3xl mx-auto" x-data="checkoutLogic()">
@@ -34,12 +55,12 @@
                         </p>
                     </div>
                     <div class="text-center sm:text-right">
-                        <p class="text-on-surface-variant font-medium text-xs md:text-sm mb-1 font-label">Estimasi Total Biaya</p>
+                        <p class="text-on-surface-variant font-medium text-xs md:text-sm mb-1 font-label">Total Pembayaran</p>
                         <p class="text-2xl md:text-3xl font-bold text-primary font-headline" x-text="formatRupiah(totalPrice)"></p>
                     </div>
                 </div>
 
-                <form method="POST" action="{{ route('reservasi.store') }}" class="space-y-6 md:space-y-8 relative z-10 font-body" x-on:submit="collectCart">
+                <form id="reservasi-form" class="space-y-6 md:space-y-8 relative z-10 font-body">
                     @csrf
                     <input type="hidden" name="cart_items" id="cart-items-input">
                     <input type="hidden" name="total_price" id="total-price-input">
@@ -48,11 +69,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div>
                                 <label class="block text-xs md:text-sm font-bold text-on-surface mb-2 font-label">Nama Pemesan</label>
-                                <input type="text" name="name" x-model="form.name" class="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl bg-surface-container-lowest border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-on-surface text-sm md:text-base" placeholder="Contoh: Budi Santoso" required>
+                                <input type="text" name="name" x-model="form.name" id="input-name" class="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl bg-surface-container-lowest border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-on-surface text-sm md:text-base" placeholder="Contoh: Budi Santoso" required>
                             </div>
                             <div>
                                 <label class="block text-xs md:text-sm font-bold text-on-surface mb-2 font-label">Nomor WhatsApp Valid</label>
-                                <input type="tel" name="phone" x-model="form.phone" class="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl bg-surface-container-lowest border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-on-surface text-sm md:text-base" placeholder="0812..." required>
+                                <input type="tel" name="phone" x-model="form.phone" id="input-phone" class="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl bg-surface-container-lowest border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-on-surface text-sm md:text-base" placeholder="0812..." required>
                             </div>
                         </div>
                     </div>
@@ -62,11 +83,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div>
                                 <label class="block text-xs md:text-sm font-bold text-on-surface mb-2 font-label">Tanggal Kedatangan</label>
-                                <input type="date" name="date" x-model="form.date" class="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl bg-surface-container-lowest border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-on-surface text-sm md:text-base" required>
+                                <input type="date" name="date" x-model="form.date" id="input-date" class="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl bg-surface-container-lowest border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-on-surface text-sm md:text-base" required>
                             </div>
                             <div>
                                 <label class="block text-xs md:text-sm font-bold text-on-surface mb-2 font-label">Kapasitas Orang</label>
-                                <select name="pax" x-model="form.pax" class="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl bg-surface-container-lowest border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-on-surface text-sm md:text-base appearance-none">
+                                <select name="pax" x-model="form.pax" id="input-pax" class="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl bg-surface-container-lowest border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-on-surface text-sm md:text-base appearance-none">
                                     <option>1 Orang (Meja Personal)</option>
                                     <option>2 Orang (Meja Pasangan)</option>
                                     <option>3 - 4 Orang (Meja Grup Kecil)</option>
@@ -76,7 +97,7 @@
                             </div>
                             <div class="md:col-span-2">
                                 <label class="block text-xs md:text-sm font-bold text-on-surface mb-2 font-label">Waktu Kedatangan</label>
-                                <input type="time" name="time" x-model="form.time" class="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl bg-surface-container-lowest border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-on-surface text-sm md:text-base" required>
+                                <input type="time" name="time" x-model="form.time" id="input-time" class="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl bg-surface-container-lowest border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-on-surface text-sm md:text-base" required>
                             </div>
                         </div>
                     </div>
@@ -88,17 +109,38 @@
                             <textarea name="notes" x-model="form.notes" rows="3" class="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl bg-surface-container-lowest border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-on-surface text-sm md:text-base resize-none" placeholder="Berikan catatan, contoh: Minta meja dekat jendela atau rayakan ulang tahun..."></textarea>
                         </div>
                     </div>
-                    
-                    <button type="submit" class="w-full mt-8 md:mt-10 py-4 md:py-5 bg-primary text-on-primary font-bold font-label text-xs sm:text-sm tracking-wider rounded-full flex items-center justify-center space-x-2 md:space-x-3 hover:scale-[1.02] shadow-xl shadow-primary/20 transition transform duration-300">
-                        <i class="fab fa-whatsapp text-xl md:text-2xl"></i>
-                        <span>KIRIM RESERVASI VIA WHATSAPP</span>
-                    </button>
-                    <p class="text-xs text-center text-on-surface-variant mt-4 md:mt-6 leading-relaxed font-label tracking-wide">Data reservasi tersimpan & dikirim ke admin Pituwolu via WhatsApp.</p>
+
+                    <!-- Payment CTA -->
+                    <div class="pt-4">
+                        <button type="button" id="pay-button" @click="submitAndPay()"
+                            class="w-full mt-4 md:mt-6 py-4 md:py-5 bg-primary text-on-primary font-bold font-label text-xs sm:text-sm tracking-wider rounded-full flex items-center justify-center space-x-2 md:space-x-3 hover:scale-[1.02] shadow-xl shadow-primary/20 transition transform duration-300">
+                            <span class="material-symbols-outlined text-xl md:text-2xl">payment</span>
+                            <span>LANJUT KE PEMBAYARAN</span>
+                        </button>
+
+                        <!-- Loading state -->
+                        <div id="payment-loading" class="hidden w-full mt-4 md:mt-6 py-4 md:py-5 bg-primary/50 text-on-primary font-bold font-label text-xs sm:text-sm tracking-wider rounded-full flex items-center justify-center space-x-2 md:space-x-3">
+                            <svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 22 6.477 22 12h-4zm2 6.477A8 8 0 0112 4.063V0C6.477 0 0 6.477 0 12h4z"></path>
+                            </svg>
+                            <span>MEMPROSES...</span>
+                        </div>
+
+                        <!-- Error message -->
+                        <div id="payment-error" class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm text-center"></div>
+
+
+                        <p class="text-xs text-center text-on-surface-variant mt-3 md:mt-4 leading-relaxed font-label tracking-wide">Pembayaran aman & terenkripsi oleh Midtrans. Setelah bayar, konfirmasi otomatis dikirim via WhatsApp.</p>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Midtrans Snap JS -->
+<script src="{{ config('midtrans.snap_url') }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
 @endsection
 
 @push('scripts')
@@ -115,7 +157,6 @@
             },
 
             get cart() {
-                // Baca langsung dari localStorage dengan key yang sama seperti di cartState
                 return JSON.parse(localStorage.getItem('pituwolu_cart') || '[]');
             },
 
@@ -131,15 +172,79 @@
                 return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
             },
 
-            collectCart() {
-                // Ambil cart dari localStorage dengan key yang benar
-                const cart = JSON.parse(localStorage.getItem('pituwolu_cart') || '[]');
+            async submitAndPay() {
+                // Validasi form
+                const name  = document.getElementById('input-name').value.trim();
+                const phone = document.getElementById('input-phone').value.trim();
+                const date  = document.getElementById('input-date').value;
+                const time  = document.getElementById('input-time').value;
+
+                if (!name || !phone || !date || !time) {
+                    document.getElementById('payment-error').textContent = 'Harap lengkapi semua field yang wajib diisi.';
+                    document.getElementById('payment-error').classList.remove('hidden');
+                    return;
+                }
+
+                document.getElementById('payment-error').classList.add('hidden');
+                document.getElementById('pay-button').classList.add('hidden');
+                document.getElementById('payment-loading').classList.remove('hidden');
+
+                // Kumpulkan cart
+                const cart       = JSON.parse(localStorage.getItem('pituwolu_cart') || '[]');
                 const totalPrice = cart.reduce((s, i) => s + (i.priceNumber * i.quantity), 0);
-                document.getElementById('cart-items-input').value = JSON.stringify(cart);
-                document.getElementById('total-price-input').value = totalPrice;
-                // Form submit berlanjut normal ke Laravel
+
+                const formData = new FormData();
+                formData.append('_token', document.querySelector('[name="_token"]').value);
+                formData.append('name',        name);
+                formData.append('phone',       phone);
+                formData.append('date',        date);
+                formData.append('time',        time);
+                formData.append('pax',         document.getElementById('input-pax').value);
+                formData.append('notes',       document.querySelector('[name="notes"]').value);
+                formData.append('cart_items',  JSON.stringify(cart));
+                formData.append('total_price', totalPrice);
+
+                try {
+                    const response = await fetch('/reservasi', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    const data = await response.json();
+
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+
+                    // Buka Midtrans Snap
+                    window.snap.pay(data.snap_token, {
+                        onSuccess: function(result) {
+                            // Redirect ke halaman finish dengan order_id
+                            window.location.href = '/reservasi/finish?order_id=' + data.order_id;
+                        },
+                        onPending: function(result) {
+                            window.location.href = '/reservasi/finish?order_id=' + data.order_id;
+                        },
+                        onError: function(result) {
+                            document.getElementById('pay-button').classList.remove('hidden');
+                            document.getElementById('payment-loading').classList.add('hidden');
+                            document.getElementById('payment-error').textContent = 'Pembayaran gagal. Silakan coba lagi.';
+                            document.getElementById('payment-error').classList.remove('hidden');
+                        },
+                        onClose: function() {
+                            document.getElementById('pay-button').classList.remove('hidden');
+                            document.getElementById('payment-loading').classList.add('hidden');
+                        }
+                    });
+
+                } catch (error) {
+                    document.getElementById('pay-button').classList.remove('hidden');
+                    document.getElementById('payment-loading').classList.add('hidden');
+                    document.getElementById('payment-error').textContent = 'Terjadi kesalahan: ' + error.message;
+                    document.getElementById('payment-error').classList.remove('hidden');
+                }
             }
         }));
     });
 </script>
-@endpushgy7v
+@endpush
