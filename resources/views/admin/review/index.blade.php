@@ -54,7 +54,11 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 max-w-[300px]">
-                        <span class="text-sm text-on-surface-v">{{ Str::limit($rv->ulasan, 80) }}</span>
+                        <span class="text-sm text-on-surface-v cursor-pointer hover:underline hover:text-pit-brown transition-colors"
+                              title="Klik untuk lihat ulasan lengkap"
+                              onclick="showFullReview(this)" data-ulasan="{{ $rv->ulasan }}">
+                            {{ Str::limit($rv->ulasan, 80) }}
+                        </span>
                     </td>
                     <td class="px-6 py-4">
                         <span class="text-xs text-on-surface-muted whitespace-nowrap">{{ $rv->created_at->format('d M Y') }}</span>
@@ -99,3 +103,23 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+    function showFullReview(element) {
+        const text = element.getAttribute('data-ulasan');
+        Swal.fire({
+            title: 'Ulasan Lengkap',
+            text: text,
+            icon: 'info',
+            confirmButtonColor: '#4B3621',
+            confirmButtonText: 'Tutup',
+            customClass: {
+                popup: 'rounded-2xl border border-outline-v/30',
+                title: 'font-heading text-xl text-on-surface',
+                confirmButton: 'font-semibold rounded-lg px-5 py-2.5',
+            }
+        });
+    }
+</script>
+@endpush

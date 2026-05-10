@@ -24,7 +24,7 @@ class PituwoluMenuSeeder extends Seeder
             'Non Coffee' => Category::firstOrCreate(['nama_kategori' => 'Non Coffee']),
             'Main Course' => Category::firstOrCreate(['nama_kategori' => 'Main Course']),
             'Snacks' => Category::firstOrCreate(['nama_kategori' => 'Snacks']),
-            'Bottle Edition' => Category::firstOrCreate(['nama_kategori' => 'Bottle Edition']),
+
         ];
 
         // Wipe existing menus if needed, or just insert new ones
@@ -78,10 +78,6 @@ class PituwoluMenuSeeder extends Seeder
             ['cat' => 'Non Coffee', 'nama' => 'Barberry', 'desc' => 'Ice Sparkling & Fresh', 'harga' => 23000, 'ice' => false, 'ice_price' => 0],
             ['cat' => 'Non Coffee', 'nama' => 'Mango Yakult', 'desc' => 'Ice Sparkling & Fresh', 'harga' => 25000, 'ice' => false, 'ice_price' => 0],
 
-            // == BOTTLE EDITION ==
-            ['cat' => 'Bottle Edition', 'nama' => 'Bottle 250 ml', 'desc' => 'Coffee / Flavour Coffee / Non Coffee (Mulai 28k/33k/40k)', 'harga' => 28000, 'ice' => false, 'ice_price' => 0],
-            ['cat' => 'Bottle Edition', 'nama' => 'Bottle 500 ml', 'desc' => 'Coffee / Flavour Coffee / Non Coffee (Mulai 50k/60k/70k)', 'harga' => 50000, 'ice' => false, 'ice_price' => 0],
-            ['cat' => 'Bottle Edition', 'nama' => 'Bottle 1000 ml', 'desc' => 'Coffee / Flavour Coffee / Non Coffee (Mulai 90k/105k/115k)', 'harga' => 90000, 'ice' => false, 'ice_price' => 0],
 
             // == MAIN COURSE ==
             // Ayam
@@ -120,7 +116,7 @@ class PituwoluMenuSeeder extends Seeder
             'Tea Based' => 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80', // Tea
             'Mocktail' => 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80', // Mocktail
             'Non Coffee' => 'https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?w=800&q=80', // Sweet drink
-            'Bottle Edition' => 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=800&q=80', // Bottles
+
             'Main Course' => 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80', // Food
             'Snacks' => 'https://images.unsplash.com/photo-1623653387945-2fd25214f8fc?w=800&q=80', // Fries
         ];

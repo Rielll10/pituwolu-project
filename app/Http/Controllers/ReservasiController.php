@@ -19,8 +19,13 @@ class ReservasiController extends Controller
         MidtransConfig::$is3ds        = config('midtrans.is_3ds');
     }
 
+    public function orderIndex()
+    {
+        return view('order');
+    }
+
     /**
-     * Step 1: Validasi & simpan reservasi, lalu buat Snap Token
+     * Store reservasi (Hanya Booking, Tanpa Midtrans)
      */
     public function store(Request $request)
     {
@@ -31,27 +36,78 @@ class ReservasiController extends Controller
             'time'        => 'required',
             'pax'         => 'required|string',
             'notes'       => 'nullable|string',
-            'cart_items'  => 'nullable|string',
-            'total_price' => 'nullable|numeric',
+            'cart_items'  => 'nullable|string', // Menampung menu jika ada
         ]);
 
         $cartItems  = $data['cart_items'] ? json_decode($data['cart_items'], true) : [];
-        $totalPrice = (int) ($data['total_price'] ?? 0);
+        $totalPrice = 0;
 
-        // Jika total_price = 0, tetap charge minimum Rp 1.000 untuk bisa diproses
-        if ($totalPrice <= 0) {
-            $totalPrice = 1000;
+        foreach ($cartItems as $item) {
+            $price = (int) ($item['priceNumber'] ?? 0);
+            $qty   = (int) ($item['quantity'] ?? 1);
+            $totalPrice += ($price * $qty);
         }
 
-        $orderId = 'PW-' . strtoupper(Str::random(6));
+        $orderId = 'RES-' . strtoupper(Str::random(6));
 
         $reservation = Reservation::create([
             'order_id'       => $orderId,
+            'order_type'     => 'reservation',
             'name'           => $data['name'],
             'phone'          => $data['phone'],
             'date'           => $data['date'],
             'time'           => $data['time'],
             'pax'            => $data['pax'],
+            'notes'          => $data['notes'] ?? null,
+            'cart_items'     => $cartItems,
+            'total_price'    => $totalPrice,
+            'status'         => 'pending',
+            'payment_status' => 'unpaid',
+        ]);
+
+        // Build WA link untuk reservasi (tanpa pembayaran Midtrans)
+        $waLink = $this->buildWhatsAppLink($reservation);
+
+        return response()->json([
+            'status'   => 'success',
+            'order_id' => $orderId,
+            'wa_link'  => $waLink
+        ]);
+    }
+
+    /**
+     * Store Order Now (Dengan Midtrans)
+     */
+    public function storeOrder(Request $request)
+    {
+        $data = $request->validate([
+            'name'        => 'required|string|max:100',
+            'phone'       => 'required|string|max:20',
+            'date'        => 'required|date',
+            'time'        => 'required',
+            'notes'       => 'nullable|string',
+            'cart_items'  => 'required|string',
+            'total_price' => 'required|numeric',
+        ]);
+
+        $cartItems  = json_decode($data['cart_items'], true);
+        $totalPrice = (int) $data['total_price'];
+
+        // Jika total_price = 0, tolak
+        if ($totalPrice <= 0) {
+            return response()->json(['error' => 'Keranjang kosong atau total tidak valid.'], 400);
+        }
+
+        $orderId = 'ORD-' . strtoupper(Str::random(6));
+
+        $reservation = Reservation::create([
+            'order_id'       => $orderId,
+            'order_type'     => 'order',
+            'name'           => $data['name'],
+            'phone'          => $data['phone'],
+            'date'           => $data['date'],
+            'time'           => $data['time'],
+            'pax'            => null, // Order Now tidak butuh pax
             'notes'          => $data['notes'] ?? null,
             'cart_items'     => $cartItems,
             'total_price'    => $totalPrice,
@@ -82,7 +138,6 @@ class ReservasiController extends Controller
             return response()->json([
                 'snap_token'     => $snapToken,
                 'order_id'       => $orderId,
-                'reservation_id' => $reservation->id,
                 'client_key'     => config('midtrans.client_key'),
                 'snap_url'       => config('midtrans.snap_url'),
             ]);
@@ -212,14 +267,27 @@ class ReservasiController extends Controller
                         : \Carbon\Carbon::parse($reservation->date)->format('d M Y');
 
         $message  = "Halo Pituwolu Coffee! %0A%0A";
-        $message .= "Saya sudah melakukan pembayaran untuk reservasi berikut:%0A";
-        $message .= "Kode: {$reservation->order_id}%0A";
-        $message .= "Nama: {$reservation->name}%0A";
-        $message .= "Tanggal: {$dateStr}%0A";
-        $message .= "Waktu: {$reservation->time}%0A";
 
-        if (!empty($reservation->notes)) {
-            $message .= "Catatan: {$reservation->notes}%0A";
+        if ($reservation->order_type === 'order') {
+            $message .= "Saya sudah melakukan pembayaran (Order Now) dengan detail berikut:%0A";
+            $message .= "Kode: {$reservation->order_id}%0A";
+            $message .= "Nama: {$reservation->name}%0A";
+            $message .= "Tanggal Ambil/Makan: {$dateStr}%0A";
+            $message .= "Waktu Ambil/Makan: {$reservation->time}%0A";
+            if (!empty($reservation->notes)) {
+                $message .= "Catatan: {$reservation->notes}%0A";
+            }
+        } else {
+            // Reservasi
+            $message .= "Saya ingin melakukan *Reservasi Meja* dengan detail berikut:%0A";
+            $message .= "Kode: {$reservation->order_id}%0A";
+            $message .= "Nama: {$reservation->name}%0A";
+            $message .= "Tanggal: {$dateStr}%0A";
+            $message .= "Waktu: {$reservation->time}%0A";
+            $message .= "Kapasitas: {$reservation->pax}%0A";
+            if (!empty($reservation->notes)) {
+                $message .= "Catatan: {$reservation->notes}%0A";
+            }
         }
 
         if (!empty($cartItems)) {
@@ -227,12 +295,18 @@ class ReservasiController extends Controller
             foreach ($cartItems as $item) {
                 $qty = $item['quantity'] ?? 1;
                 $title = $item['title'] ?? 'Menu';
-                $message .= "- {$qty}x {$title}%0A";
+                $price = $item['priceNumber'] ?? 0;
+                $message .= "- {$qty}x {$title} (Rp" . number_format($price * $qty, 0, ',', '.') . ")%0A";
             }
+            $message .= "%0ATotal Pesanan: Rp" . number_format($totalPrice, 0, ',', '.') . "%0A";
         }
 
-        $message .= "%0AStatus: LUNAS (Midtrans)%0A%0A";
-        $message .= "Mohon segera diproses. Terima kasih!";
+        if ($reservation->order_type === 'order') {
+            $message .= "%0AStatus: LUNAS (Midtrans)%0A%0A";
+            $message .= "Mohon segera diproses pesanan saya. Terima kasih!";
+        } else {
+            $message .= "%0A%0AMohon konfirmasi ketersediaan meja untuk reservasi saya. Terima kasih!";
+        }
 
         $waNumber = '6289653931071';
         return "https://wa.me/{$waNumber}?text={$message}";

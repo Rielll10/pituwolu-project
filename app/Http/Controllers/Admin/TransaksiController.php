@@ -10,7 +10,7 @@ class TransaksiController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Reservation::latest();
+        $query = Reservation::latest()->where('order_type', 'order');
 
         if ($request->filled('payment_status')) {
             $query->where('payment_status', $request->payment_status);
@@ -28,12 +28,12 @@ class TransaksiController extends Controller
         $transactions = $query->paginate(15);
 
         $stats = [
-            'total'   => Reservation::count(),
-            'paid'    => Reservation::where('payment_status', 'paid')->count(),
-            'pending' => Reservation::where('payment_status', 'pending')->count(),
-            'unpaid'  => Reservation::where('payment_status', 'unpaid')->count(),
-            'failed'  => Reservation::whereIn('payment_status', ['failed', 'expired'])->count(),
-            'revenue' => Reservation::where('payment_status', 'paid')->sum('total_price'),
+            'total'   => Reservation::where('order_type', 'order')->count(),
+            'paid'    => Reservation::where('order_type', 'order')->where('payment_status', 'paid')->count(),
+            'pending' => Reservation::where('order_type', 'order')->where('payment_status', 'pending')->count(),
+            'unpaid'  => Reservation::where('order_type', 'order')->where('payment_status', 'unpaid')->count(),
+            'failed'  => Reservation::where('order_type', 'order')->whereIn('payment_status', ['failed', 'expired'])->count(),
+            'revenue' => Reservation::where('order_type', 'order')->where('payment_status', 'paid')->sum('total_price'),
         ];
 
         return view('admin.transaksi.index', compact('transactions', 'stats'));

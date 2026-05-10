@@ -24,9 +24,9 @@
 
         <!-- Story Section -->
         <div class="flex flex-col lg:flex-row gap-12 lg:gap-24 mb-24 md:mb-40">
-            <div class="w-full lg:w-1/3">
-                <span class="text-secondary tracking-widest font-label uppercase text-sm font-bold block lg:sticky top-32">AWAL MULA PITUWOLU</span>
-                <h2 class="text-3xl md:text-4xl font-bold font-headline text-on-surface mt-4 lg:sticky top-[10rem]">Membangun Ekosistem Kopi Berkelanjutan</h2>
+            <div class="w-full lg:w-1/3 lg:sticky lg:top-32 self-start">
+                <span class="text-secondary tracking-widest font-label uppercase text-sm font-bold block">AWAL MULA PITUWOLU</span>
+                <h2 class="text-3xl md:text-4xl font-bold font-headline text-on-surface mt-4">Membangun Ekosistem Kopi Berkelanjutan</h2>
             </div>
             
             <div class="w-full lg:w-2/3">

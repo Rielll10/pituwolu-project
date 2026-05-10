@@ -88,11 +88,11 @@
                     <tr>
                         <th style="padding: 12px 16px; text-align: left; font-size: 13px; color: #5a4a3a;">Order ID</th>
                         <th style="padding: 12px 16px; text-align: left; font-size: 13px; color: #5a4a3a;">Pelanggan</th>
-                        <th style="padding: 12px 16px; text-align: left; font-size: 13px; color: #5a4a3a;">Reservasi</th>
+                        <th style="padding: 12px 16px; text-align: left; font-size: 13px; color: #5a4a3a;">Waktu Ambil/Makan</th>
+                        <th style="padding: 12px 16px; text-align: left; font-size: 13px; color: #5a4a3a;">Pesanan Menu</th>
                         <th style="padding: 12px 16px; text-align: left; font-size: 13px; color: #5a4a3a;">Total</th>
-                        <th style="padding: 12px 16px; text-align: center; font-size: 13px; color: #5a4a3a;">Status</th>
-                        <th style="padding: 12px 16px; text-align: left; font-size: 13px; color: #5a4a3a;">Metode</th>
-                        <th style="padding: 12px 16px; text-align: left; font-size: 13px; color: #5a4a3a;">Waktu Bayar</th>
+                        <th style="padding: 12px 16px; text-align: center; font-size: 13px; color: #5a4a3a;">Status & Metode</th>
+                        <th style="padding: 12px 16px; text-align: left; font-size: 13px; color: #5a4a3a;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -100,7 +100,10 @@
                     <tr style="border-bottom: 1px solid #f0eae1;">
                         <td style="padding: 16px; vertical-align: top;">
                             <div style="font-size: 12px; font-family: monospace; font-weight: 600; color: #c17d2e; background: #fdfaf6; padding: 4px 8px; border-radius: 4px; display: inline-block;">
-                                {{ $t->order_id ?? '-' }}
+                                {{ $t->order_id ?? 'OLD-'.$t->id }}
+                            </div>
+                            <div style="font-size: 11px; color: #9c8c7a; margin-top: 4px;">
+                                {{ $t->created_at->format('d M Y, H:i') }}
                             </div>
                         </td>
                         <td style="padding: 16px; vertical-align: top;">
@@ -109,13 +112,28 @@
                                style="color:#c17d2e; text-decoration:none; font-weight:500; font-size: 12px; display: flex; align-items: center; gap: 4px; margin-top: 4px;">
                                 <i class="fab fa-whatsapp"></i> {{ $t->phone }}
                             </a>
+                            @if($t->notes)
+                            <div style="font-size:11px; color:#9c8c7a; margin-top:6px; background: #f9f9f9; padding: 6px; border-radius: 4px; border-left: 2px solid #e8e0d5;">
+                                "{{ Str::limit($t->notes, 40) }}"
+                            </div>
+                            @endif
                         </td>
                         <td style="padding: 16px; vertical-align: top;">
                             <div style="font-weight: 600; color: #1a1109; font-size: 13px;">{{ $t->date->format('d M Y') }}</div>
                             <div style="font-size:12px; color:#c17d2e; font-weight: 600;">Pukul {{ $t->time }}</div>
-                            <div style="font-size:12px; color:#9c8c7a; margin-top: 4px; display: flex; align-items: center; gap: 4px;">
-                                <span class="material-symbols-outlined" style="font-size: 14px;">group</span> {{ $t->pax }}
-                            </div>
+                        </td>
+                        <td style="padding: 16px; vertical-align: top;">
+                            @if(!empty($t->cart_items))
+                                <ul style="margin: 0; padding-left: 16px; font-size: 12px; color: #5a4a3a;">
+                                    @foreach($t->cart_items as $item)
+                                        <li style="margin-bottom: 2px;">
+                                            {{ $item['quantity'] ?? 1 }}x <strong>{{ $item['title'] ?? 'Menu' }}</strong>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <span style="font-size: 12px; color: #9c8c7a; font-style: italic;">Hanya Reservasi Tempat</span>
+                            @endif
                         </td>
                         <td style="padding: 16px; vertical-align: top; font-weight:700; color:#1a1109;">
                             {{ $t->total_price > 0 ? 'Rp '.number_format($t->total_price, 0, ',', '.') : '-' }}
@@ -132,20 +150,38 @@
                                 };
                                 $psLabel = $t->paymentStatusLabel();
                             @endphp
-                            <span style="display:inline-block; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; {{ $psColor }}">
+                            <span style="display:inline-block; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; {{ $psColor }} margin-bottom: 4px;">
                                 {{ $psLabel }}
                             </span>
-                        </td>
-                        <td style="padding: 16px; vertical-align: top; font-size:12px; font-weight: 600; color:#5a4a3a; text-transform:uppercase;">
-                            {{ $t->payment_type ? str_replace('_', ' ', $t->payment_type) : '-' }}
-                        </td>
-                        <td style="padding: 16px; vertical-align: top; font-size:12px; color:#5a4a3a;">
-                            @if($t->paid_at)
-                                <div style="font-weight: 600;">{{ $t->paid_at->format('d M Y') }}</div>
-                                <div style="color: #9c8c7a;">{{ $t->paid_at->format('H:i') }} WIB</div>
-                            @else
-                                -
+                            @if($t->payment_type)
+                            <div style="font-size:10px; font-weight: 600; color:#9c8c7a; text-transform:uppercase;">
+                                VIA: {{ str_replace('_', ' ', $t->payment_type) }}
+                            </div>
                             @endif
+                        </td>
+                        <td style="padding: 16px; vertical-align: top; text-align: right;">
+                            <div style="display:flex; flex-direction: column; gap:8px; align-items: flex-end;">
+                                {{-- Update Status --}}
+                                @if($t->payment_status === 'paid')
+                                <form method="POST" action="{{ route('admin.reservasi.updateStatus', $t) }}">
+                                    @csrf @method('PATCH')
+                                    <select name="status" onchange="this.form.submit()"
+                                        style="padding:6px 10px; border:1.5px solid #e8e0d5; border-radius:6px; font-size:12px; font-weight:600; color:#1a1109; background:#fdfaf6; cursor:pointer;">
+                                        <option value="pending"   {{ $t->status=='pending'   ? 'selected':'' }}>⏳ Pending</option>
+                                        <option value="confirmed" {{ $t->status=='confirmed' ? 'selected':'' }}>✅ Confirmed</option>
+                                        <option value="cancelled" {{ $t->status=='cancelled' ? 'selected':'' }}>❌ Cancelled</option>
+                                    </select>
+                                </form>
+                                @endif
+                                {{-- Delete --}}
+                                <form method="POST" action="{{ route('admin.reservasi.destroy', $t) }}"
+                                      class="swal-confirm" data-swal-title="Hapus Transaksi?" data-swal-text="Transaksi atas nama {{ $t->name }} akan dihapus permanen.">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" style="background: none; border: none; color: #ef4444; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='none'">
+                                        <span class="material-symbols-outlined" style="font-size:16px;">delete</span> Hapus
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty

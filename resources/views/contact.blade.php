@@ -23,9 +23,7 @@
                 <!-- Location Panel + Maps -->
                 <div class="bg-surface-container p-6 sm:p-8 md:p-10 rounded-[20px] sm:rounded-[32px] md:rounded-[40px] shadow-sm border border-surface-container-highest flex flex-col gap-6 md:gap-8">
                     <div class="flex items-center space-x-3 md:space-x-4">
-                        <div class="w-12 sm:w-14 md:w-16 h-12 sm:h-14 md:h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-2xl md:text-3xl shrink-0 shadow-sm border-2 border-secondary/20">
-                            <span class="material-symbols-outlined text-error">pin_drop</span>
-                        </div>
+                        <span class="material-symbols-outlined text-3xl md:text-4xl text-secondary">pin_drop</span>
                         <h3 class="text-xl sm:text-2xl md:text-3xl font-bold font-headline text-on-surface">Kunjungi Pituwolu</h3>
                     </div>
                     <div class="space-y-6 md:space-y-8 font-body">
@@ -85,10 +83,8 @@
             <div class="w-full lg:w-[50%]">
                 <div class="bg-surface-container p-8 md:p-10 rounded-[40px] shadow-sm border border-surface-container-highest h-full flex flex-col" x-data="feedbackLogic()">
                     <div class="flex items-center space-x-4 mb-8">
-                        <div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-xl shrink-0 shadow-sm border-2 border-primary/20">
-                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-                        </div>
-                        <h3 class="text-2xl font-bold font-headline text-on-surface">Ulasan Anda</h3>
+                        <span class="material-symbols-outlined text-3xl md:text-4xl text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <h3 class="text-2xl md:text-3xl font-bold font-headline text-on-surface">Ulasan Anda</h3>
                     </div>
 
                     @if(session('success'))

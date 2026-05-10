@@ -7,7 +7,7 @@
     <section id="menu" class="px-4 sm:px-6 md:px-8 max-w-screen-2xl mx-auto" x-data="menuLogic()">
         <div class="container mx-auto text-center">
             <span class="text-secondary font-label font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-xs">Pilihan Menu</span>
-            <h1 class="text-2xl sm:text-3xl md:text-6xl font-bold mt-3 md:mt-4 mb-8 md:mb-16 font-headline text-on-surface">Signature Drinks & Bites</h1>
+            <h1 class="text-2xl sm:text-3xl md:text-6xl font-bold mt-3 md:mt-4 mb-8 md:mb-16 font-headline text-on-surface">Minuman & Camilan Spesial</h1>
 
             <!-- Menu Filter -->
             <div class="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mb-12 md:mb-20 font-label">

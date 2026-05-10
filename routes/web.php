@@ -20,11 +20,15 @@ Route::get('/about', fn () => view('about'));
 Route::get('/menu', [HomeController::class, 'menu']);
 Route::get('/gallery', [HomeController::class, 'gallery']);
 Route::get('/contact', fn () => view('contact'));
-Route::get('/reservasi', fn () => view('reservasi'));
+Route::get('/reservasi', function () {
+    return view('reservasi', ['menus' => \App\Models\Menu::where('is_active', true)->get()]);
+});
 
 // Frontend POST routes
 Route::post('/reservasi', [ReservasiController::class, 'store'])->name('reservasi.store');
 Route::get('/reservasi/finish', [ReservasiController::class, 'finish'])->name('reservasi.finish');
+Route::get('/order', [ReservasiController::class, 'orderIndex'])->name('order.index');
+Route::post('/order', [ReservasiController::class, 'storeOrder'])->name('order.store');
 Route::post('/review', [ReviewController::class, 'store'])->name('review.store');
 
 // Midtrans Webhook (tanpa CSRF)

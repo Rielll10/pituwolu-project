@@ -21,11 +21,11 @@
                 <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <a href="/menu"
                         class="bg-primary text-on-primary px-6 sm:px-10 py-3.5 md:py-4 rounded-full font-label font-bold text-sm hover:translate-y-[-4px] transition-all shadow-xl inline-block text-center">
-                        EXPLORE MENU
+                        LIHAT MENU
                     </a>
                     <a href="/about"
                         class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-6 sm:px-10 py-3.5 md:py-4 rounded-full font-label font-bold text-sm hover:bg-white/20 transition-all inline-block text-center">
-                        OUR STORY
+                        TENTANG KAMI
                     </a>
                 </div>
             </div>
@@ -208,21 +208,22 @@
                 <p class="text-on-surface-variant font-body text-lg">Temukan berbagai promo menarik dari kami!</p>
             </div>
 
+            @if($promos->count() > 0)
             <!-- Swiper Container for PROMO -->
             <div class="swiper promo-swiper pb-16 overflow-visible">
                 <div class="swiper-wrapper">
-                    @forelse($promos as $promo)
+                    @foreach($promos as $promo)
                         {{-- Dynamic Promo Card from DB --}}
                         <div class="swiper-slide !w-[85vw] md:!w-[450px] !h-auto">
                             @if($promo->link)
-                                <a href="{{ $promo->link }}" target="_blank" class="block relative rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-surface-container h-full min-h-[400px]">
+                                <a href="{{ $promo->link }}" target="_blank" class="block relative rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-surface-container cursor-pointer">
                             @else
-                                <div @click="$dispatch('open-lightbox', '{{ Storage::url($promo->image) }}')" class="relative rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-surface-container h-full min-h-[400px] cursor-zoom-in">
+                                <div @click="$dispatch('open-lightbox', '{{ Storage::url($promo->image) }}')" class="relative rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-surface-container cursor-zoom-in">
                             @endif
                             
                                 @if ($promo->image)
                                     <img src="{{ Storage::url($promo->image) }}" alt="{{ $promo->title }}"
-                                        class="block w-full h-full absolute inset-0 object-cover group-hover:scale-105 transition-transform duration-500">
+                                        class="block w-full h-auto group-hover:scale-105 transition-transform duration-500">
                                 @endif
                                 
                                 @if ($promo->end_date)
@@ -239,70 +240,28 @@
                                 </div>
                             @endif
                         </div>
-                    @empty
-                        {{-- Fallback hardcoded promos when DB is empty --}}
-                        <div class="swiper-slide !w-[85vw] md:!w-[450px]">
-                            <div
-                                class="relative aspect-square rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-gradient-to-br from-[#DEE5D4] to-[#B0C4A4]">
-                                <div
-                                    class="absolute right-4 bottom-1/4 text-4xl sm:text-5xl font-black text-emerald-900/5 leading-none w-1/2 text-right pointer-events-none z-0">
-                                    everyday everyday everyday everyday</div>
-                                <div class="absolute top-8 left-8 right-8 flex justify-between items-start z-10">
-                                    <div>
-                                        <span
-                                            class="block text-emerald-950 font-label text-xl sm:text-2xl font-bold leading-tight">Disc.</span>
-                                        <span
-                                            class="block text-emerald-950 font-headline font-black text-6xl sm:text-8xl leading-none">30<span
-                                                class="text-4xl sm:text-5xl">%</span></span>
-                                    </div>
-                                    <div class="text-right flex flex-col items-end">
-                                        <span
-                                            class="block text-emerald-800 font-headline italic text-2xl -rotate-12 mb-1">Treats</span>
-                                        <span
-                                            class="block text-emerald-950 font-label font-bold text-sm tracking-tight uppercase">PITUWeekdays</span>
-                                    </div>
-                                </div>
-                                <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?q=80&w=600&auto=format&fit=crop"
-                                    class="absolute -bottom-10 -right-6 w-[90%] md:w-[85%] object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500 z-10 grayscale-[20%] contrast-125"
-                                    alt="Iced Coffee">
-                                <div class="absolute bottom-6 left-8 z-10 w-full">
-                                    <span
-                                        class="text-emerald-950/60 font-label text-[10px] md:text-xs uppercase font-bold tracking-widest">T&C
-                                        Applied | Limited Quota</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide !w-[85vw] md:!w-[450px]">
-                            <div
-                                class="relative aspect-square rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-gradient-to-br from-[#F1E0C5] to-[#D5B990]">
-                                <div class="absolute top-8 left-8 right-8 z-10">
-                                    <span
-                                        class="block text-amber-950 font-label text-xl sm:text-2xl font-bold leading-tight">Saturday</span>
-                                    <span
-                                        class="block text-amber-950 font-headline font-black text-4xl sm:text-5xl leading-tight mt-1">Free
-                                        Upsize</span>
-                                </div>
-                                <img src="https://images.unsplash.com/photo-1557006021-b85faa2bc5e2?q=80&w=600&auto=format&fit=crop"
-                                    class="absolute -bottom-8 -right-8 w-[100%] md:w-[110%] object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500 z-10 contrast-125"
-                                    alt="Latte">
-                                <div class="absolute bottom-6 left-8 z-10 w-full">
-                                    <span
-                                        class="text-amber-950/60 font-label text-[10px] md:text-xs uppercase font-bold tracking-widest">T&C
-                                        Applied | All Store</span>
-                                </div>
-                            </div>
-                        </div>
-                    @endforelse
+                    @endforeach
                 </div>
                 <!-- Pagination -->
                 <div class="swiper-pagination !static !mt-8"></div>
             </div>
+            @else
+            <div class="w-full flex justify-center py-10">
+                <div class="text-center bg-surface-container border border-outline-variant/30 px-8 py-16 md:py-24 rounded-[40px] w-full max-w-3xl mx-auto shadow-sm flex flex-col items-center justify-center">
+                    <div class="w-24 h-24 bg-primary-container/50 rounded-full flex items-center justify-center mb-6 shadow-inner mx-auto border border-primary/10">
+                        <span class="material-symbols-outlined text-5xl text-primary" style="font-variation-settings: 'FILL' 1;">campaign</span>
+                    </div>
+                    <h4 class="font-headline text-3xl md:text-4xl text-on-surface font-bold mb-3">Promo Coming Soon</h4>
+                    <p class="text-on-surface-variant font-body text-lg max-w-md mx-auto">Belum ada promo aktif saat ini. Nantikan penawaran spesial dan kejutan menarik dari Pituwolu!</p>
+                </div>
+            </div>
+            @endif
         </div>
 
         <!-- WATERMARK BG untuk KESERUAN -->
         <div
             class="absolute bottom-[20%] left-0 w-full flex justify-center pointer-events-none opacity-[0.03] z-0 overflow-hidden">
-            <h2 class="text-[12vw] font-headline font-black whitespace-nowrap tracking-widest uppercase">E V E N T S</h2>
+            <h2 class="text-[12vw] font-headline font-black whitespace-nowrap tracking-widest uppercase"></h2>
         </div>
 
         <!-- KESERUAN SECTION -->
@@ -313,21 +272,22 @@
                 </p>
             </div>
 
+            @if($events->count() > 0)
             <!-- Swiper Container for KESERUAN -->
             <div class="swiper event-swiper pb-16 overflow-visible">
                 <div class="swiper-wrapper">
-                    @forelse($events as $ev)
+                    @foreach($events as $ev)
                         {{-- Dynamic Event Card from DB --}}
                         <div class="swiper-slide !w-[85vw] md:!w-[450px] !h-auto">
                             @if($ev->link)
-                                <a href="{{ $ev->link }}" target="_blank" class="block relative rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-surface-container h-full min-h-[400px]">
+                                <a href="{{ $ev->link }}" target="_blank" class="block relative rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-surface-container cursor-pointer">
                             @else
-                                <div @click="$dispatch('open-lightbox', '{{ Storage::url($ev->image) }}')" class="relative rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-surface-container h-full min-h-[400px] cursor-zoom-in">
+                                <div @click="$dispatch('open-lightbox', '{{ Storage::url($ev->image) }}')" class="relative rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-surface-container cursor-zoom-in">
                             @endif
                             
                                 @if ($ev->image)
                                     <img src="{{ Storage::url($ev->image) }}" alt="{{ $ev->title }}"
-                                        class="block w-full h-full absolute inset-0 object-cover group-hover:scale-105 transition-transform duration-500">
+                                        class="block w-full h-auto group-hover:scale-105 transition-transform duration-500">
                                 @endif
                                 
                                 @if ($ev->start_date)
@@ -344,65 +304,22 @@
                                 </div>
                             @endif
                         </div>
-                    @empty
-                        {{-- Fallback hardcoded events --}}
-                        <div class="swiper-slide !w-[85vw] md:!w-[450px]">
-                            <div
-                                class="relative aspect-square rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-gradient-to-br from-[#D4DFE5] to-[#A4B8C4]">
-                                <div class="absolute top-8 left-8 right-8 flex justify-between items-start z-10">
-                                    <div>
-                                        <span
-                                            class="block text-slate-950 font-label text-xl sm:text-2xl font-bold leading-tight">Match
-                                            Day</span>
-                                        <span
-                                            class="block text-slate-950 font-headline font-black text-4xl sm:text-5xl leading-tight mt-1">Nobar<br />Timnas</span>
-                                    </div>
-                                </div>
-                                <img src="https://images.unsplash.com/photo-1614632537190-23e4146777db?q=80&w=600&auto=format&fit=crop"
-                                    class="absolute -bottom-10 -right-10 w-[110%] object-contain mix-blend-overlay group-hover:scale-105 transition-transform duration-500 z-10 opacity-60"
-                                    alt="Football">
-                                <div class="absolute bottom-6 right-6 z-20">
-                                    <span
-                                        class="bg-slate-900 text-slate-50 px-4 py-2 rounded-full font-label text-xs font-bold uppercase shadow-lg">15
-                                        Dec - 19:00</span>
-                                </div>
-                                <div class="absolute bottom-6 left-8 z-10 w-full">
-                                    <span
-                                        class="text-slate-950/60 font-label text-[10px] md:text-xs uppercase font-bold tracking-widest">Free
-                                        Entry | Snacks</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide !w-[85vw] md:!w-[450px]">
-                            <div
-                                class="relative aspect-square rounded-[40px] overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 bg-gradient-to-br from-[#EBDAD4] to-[#C4A9A2]">
-                                <div class="absolute top-8 left-8 right-8 z-10">
-                                    <span
-                                        class="block text-[#4A2C24] font-label text-xl sm:text-2xl font-bold leading-tight">Friday
-                                        Night</span>
-                                    <span
-                                        class="block text-[#4A2C24] font-headline font-black text-4xl sm:text-5xl leading-tight mt-1">Live<br />Acoustic</span>
-                                </div>
-                                <img src="https://images.unsplash.com/photo-1510915361894-faa88cbd37b3?q=80&w=600&auto=format&fit=crop"
-                                    class="absolute -bottom-16 -right-10 w-[120%] object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500 z-10 opacity-70 contrast-125"
-                                    alt="Acoustic Guitar">
-                                <div class="absolute bottom-6 right-6 z-20">
-                                    <span
-                                        class="bg-[#4A2C24] text-orange-50 px-4 py-2 rounded-full font-label text-xs font-bold uppercase shadow-lg">Every
-                                        Friday</span>
-                                </div>
-                                <div class="absolute bottom-6 left-8 z-10 w-full">
-                                    <span
-                                        class="text-[#4A2C24]/60 font-label text-[10px] md:text-xs uppercase font-bold tracking-widest">Local
-                                        Bands</span>
-                                </div>
-                            </div>
-                        </div>
-                    @endforelse
+                    @endforeach
                 </div>
                 <!-- Pagination -->
                 <div class="swiper-pagination-events !static !mt-8 text-center"></div>
             </div>
+            @else
+            <div class="w-full flex justify-center py-10">
+                <div class="text-center bg-surface-container border border-outline-variant/30 px-8 py-16 md:py-24 rounded-[40px] w-full max-w-3xl mx-auto shadow-sm flex flex-col items-center justify-center">
+                    <div class="w-24 h-24 bg-primary-container/50 rounded-full flex items-center justify-center mb-6 shadow-inner mx-auto border border-primary/10">
+                        <span class="material-symbols-outlined text-5xl text-primary" style="font-variation-settings: 'FILL' 1;">event_available</span>
+                    </div>
+                    <h4 class="font-headline text-3xl md:text-4xl text-on-surface font-bold mb-3">Event Coming Soon</h4>
+                    <p class="text-on-surface-variant font-body text-lg max-w-md mx-auto">Jadwal acara Pituwolu belum tersedia. Pantau terus untuk info live music dan event seru lainnya!</p>
+                </div>
+            </div>
+            @endif
         </div>
 
     </section>
@@ -477,7 +394,7 @@
         <div class="max-w-screen-2xl mx-auto px-6 md:px-8">
             <div class="flex flex-col items-center mb-16 text-center">
                 <h2 class="font-label text-secondary tracking-[0.3em] text-xs font-bold mb-4 uppercase">Testimoni</h2>
-                <h3 class="font-headline text-4xl md:text-5xl text-on-surface">Apa Kata Mereka</h3>
+                <h3 class="font-headline text-4xl md:text-5xl text-on-surface capitalize">Apa Kata Mereka Tentang Pituwolu</h3>
             </div>
 
             <!-- Testimoni Swiper Carousel -->
@@ -567,16 +484,8 @@
                     @endforelse
                 </div>
 
-                <!-- Navigation -->
-                <div class="flex items-center justify-center gap-4 mt-8">
-                    <button class="testimoni-swiper-button-prev w-12 h-12 rounded-full border border-on-surface/20 flex items-center justify-center hover:bg-primary hover:text-on-primary hover:border-primary transition-all">
-                        <span class="material-symbols-outlined">arrow_back</span>
-                    </button>
-                    <div class="testimoni-swiper-pagination flex gap-2"></div>
-                    <button class="testimoni-swiper-button-next w-12 h-12 rounded-full border border-on-surface/20 flex items-center justify-center hover:bg-primary hover:text-on-primary hover:border-primary transition-all">
-                        <span class="material-symbols-outlined">arrow_forward</span>
-                    </button>
-                </div>
+                <!-- Pagination -->
+                <div class="testimoni-swiper-pagination !static !mt-8 text-center"></div>
             </div>
         </div>
     </section>    
@@ -740,6 +649,7 @@
             const testimoniSwiper = new Swiper('.testimoni-swiper', {
                 slidesPerView: 1,
                 spaceBetween: 20,
+                grabCursor: true,
                 breakpoints: {
                     640: {
                         slidesPerView: 2,
@@ -747,10 +657,6 @@
                     1024: {
                         slidesPerView: 3,
                     },
-                },
-                navigation: {
-                    nextEl: '.testimoni-swiper-button-next',
-                    prevEl: '.testimoni-swiper-button-prev',
                 },
                 pagination: {
                     el: '.testimoni-swiper-pagination',

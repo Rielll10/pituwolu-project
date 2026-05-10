@@ -301,11 +301,11 @@
         </button>
 
         <div class="flex flex-col space-y-8">
-            <a href="/" class="text-4xl font-headline font-bold text-white tracking-wide">Home</a>
-            <a href="/about" class="text-4xl font-headline font-bold text-white tracking-wide">About Us</a>
-            <a href="/menu" class="text-4xl font-headline font-bold text-white tracking-wide">Our Menu</a>
-            <a href="/gallery" class="text-4xl font-headline font-bold text-white tracking-wide">Gallery</a>
-            <a href="/contact" class="text-4xl font-headline font-bold text-white tracking-wide">Contact</a>
+            <a href="/" class="text-4xl font-headline font-bold text-white tracking-wide">Beranda</a>
+            <a href="/about" class="text-4xl font-headline font-bold text-white tracking-wide">Tentang Kami</a>
+            <a href="/menu" class="text-4xl font-headline font-bold text-white tracking-wide">Menu</a>
+            <a href="/gallery" class="text-4xl font-headline font-bold text-white tracking-wide">Galeri</a>
+            <a href="/contact" class="text-4xl font-headline font-bold text-white tracking-wide">Kontak</a>
             
 
             <a href="/reservasi" class="bg-[#e9bf91] text-[#2b1700] text-center w-full py-6 rounded-full font-black font-label text-2xl shadow-2xl">RESERVASI</a>
@@ -333,11 +333,13 @@
             
             <!-- Desktop Links -->
             <div class="hidden lg:flex items-center gap-4 xl:gap-8">
-                <a class="{{ request()->is('/') ? 'text-white border-b-2 border-[#add0a8] pb-1' : 'text-white/80 hover:text-white' }} font-bold font-body text-xs xl:text-sm transition-all" href="/">Home</a>
-                <a class="{{ request()->is('about*') ? 'text-white border-b-2 border-[#add0a8] pb-1' : 'text-white/80 hover:text-white' }} font-bold font-body text-xs xl:text-sm transition-all" href="/about">About</a>
-                <a class="{{ request()->is('menu*') ? 'text-white border-b-2 border-[#add0a8] pb-1' : 'text-white/80 hover:text-white' }} font-bold font-body text-xs xl:text-sm transition-all" href="/menu">Menu</a>
-                <a class="{{ request()->is('gallery*') ? 'text-white border-b-2 border-[#add0a8] pb-1' : 'text-white/80 hover:text-white' }} font-bold font-body text-xs xl:text-sm transition-all" href="/gallery">Gallery</a>
-                <a class="{{ request()->is('contact*') ? 'text-white border-b-2 border-[#add0a8] pb-1' : 'text-white/80 hover:text-white' }} font-bold font-body text-xs xl:text-sm transition-all" href="/contact">Contact</a>
+                <a class="{{ request()->is('/') ? 'text-white border-b-2 border-[#add0a8] pb-1' : 'text-white/80 hover:text-white' }} font-bold font-body text-xs xl:text-sm transition-all" href="/">Beranda</a>
+                <a class="{{ request()->is('about*') ? 'text-white border-b-2 border-[#add0a8] pb-1' : 'text-white/80 hover:text-white' }} font-bold font-body text-xs xl:text-sm transition-all" href="/about">Tentang Kami</a>
+                <a class="{{ request()->is('menu*') ? 'text-white border-b-2 border-[#add0a8] pb-1' : 'text-white/80 hover:text-white' }} font-bold font-body text-xs xl:text-sm transition-all" href="/menu">Menu
+
+                </a>
+                <a class="{{ request()->is('gallery*') ? 'text-white border-b-2 border-[#add0a8] pb-1' : 'text-white/80 hover:text-white' }} font-bold font-body text-xs xl:text-sm transition-all" href="/gallery">Galeri</a>
+                <a class="{{ request()->is('contact*') ? 'text-white border-b-2 border-[#add0a8] pb-1' : 'text-white/80 hover:text-white' }} font-bold font-body text-xs xl:text-sm transition-all" href="/contact">Kontak</a>
                 <a class="bg-[#9B6B43] text-white px-5 xl:px-8 py-2 md:py-2.5 rounded-full font-label text-xs xl:text-sm font-bold shadow-lg hover:scale-105 transition-transform" href="/reservasi">Reservasi</a>
             </div>
             
@@ -454,7 +456,7 @@
                                     <p class="text-xs text-on-surface-variant font-body text-center">Pajak dan layanan
                                         dihitung di kasir.</p>
                                     <div class="mt-6">
-                                        <a href="/reservasi"
+                                        <a href="/order"
                                             class="flex w-full items-center justify-center rounded-full bg-primary px-6 py-4 font-label font-bold tracking-wider text-sm text-on-primary shadow-xl shadow-primary/20 hover:scale-105 transition transform duration-300">
                                             CHECKOUT SEKARANG
                                         </a>
@@ -499,11 +501,11 @@
                 <div class="flex flex-col items-start w-full md:w-auto">
                     <h3 class="font-bold text-on-surface font-label text-xs md:text-sm mb-3 md:mb-4 tracking-wider md:tracking-widest uppercase">Tautan Cepat</h3>
                     <ul class="flex flex-col gap-2">
-                        <li><a href="/" class="text-xs md:text-sm text-on-surface-variant hover:text-primary font-body transition-colors duration-200 flex items-center gap-2 group"><span class="material-symbols-outlined text-xs opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0 text-primary">arrow_forward</span>Home</a></li>
-                        <li><a href="/about" class="text-xs md:text-sm text-on-surface-variant hover:text-primary font-body transition-colors duration-200 flex items-center gap-2 group"><span class="material-symbols-outlined text-xs opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0 text-primary">arrow_forward</span>About Us</a></li>
-                        <li><a href="/menu" class="text-xs md:text-sm text-on-surface-variant hover:text-primary font-body transition-colors duration-200 flex items-center gap-2 group"><span class="material-symbols-outlined text-xs opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0 text-primary">arrow_forward</span>Our Menu</a></li>
-                        <li><a href="/gallery" class="text-xs md:text-sm text-on-surface-variant hover:text-primary font-body transition-colors duration-200 flex items-center gap-2 group"><span class="material-symbols-outlined text-xs opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0 text-primary">arrow_forward</span>Gallery</a></li>
-                        <li><a href="/contact" class="text-xs md:text-sm text-on-surface-variant hover:text-primary font-body transition-colors duration-200 flex items-center gap-2 group"><span class="material-symbols-outlined text-xs opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0 text-primary">arrow_forward</span>Contact</a></li>
+                        <li><a href="/" class="text-xs md:text-sm text-on-surface-variant hover:text-primary font-body transition-colors duration-200 flex items-center gap-2 group"><span class="material-symbols-outlined text-xs opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0 text-primary">arrow_forward</span>Beranda</a></li>
+                        <li><a href="/about" class="text-xs md:text-sm text-on-surface-variant hover:text-primary font-body transition-colors duration-200 flex items-center gap-2 group"><span class="material-symbols-outlined text-xs opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0 text-primary">arrow_forward</span>Tentang Kami</a></li>
+                        <li><a href="/menu" class="text-xs md:text-sm text-on-surface-variant hover:text-primary font-body transition-colors duration-200 flex items-center gap-2 group"><span class="material-symbols-outlined text-xs opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0 text-primary">arrow_forward</span>Menu</a></li>
+                        <li><a href="/gallery" class="text-xs md:text-sm text-on-surface-variant hover:text-primary font-body transition-colors duration-200 flex items-center gap-2 group"><span class="material-symbols-outlined text-xs opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0 text-primary">arrow_forward</span>Galeri</a></li>
+                        <li><a href="/contact" class="text-xs md:text-sm text-on-surface-variant hover:text-primary font-body transition-colors duration-200 flex items-center gap-2 group"><span class="material-symbols-outlined text-xs opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0 text-primary">arrow_forward</span>Kontak</a></li>
                         <li><a href="/reservasi" class="text-xs md:text-sm text-on-surface-variant hover:text-primary font-body transition-colors duration-200 flex items-center gap-2 group"><span class="material-symbols-outlined text-xs opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0 text-primary">arrow_forward</span>Reservasi</a></li>
                     </ul>
                 </div>

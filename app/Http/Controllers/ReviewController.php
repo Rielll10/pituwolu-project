@@ -19,6 +19,6 @@ class ReviewController extends Controller
 
         Review::create($data);
 
-        return back()->with('success', 'Terima kasih! Ulasan Anda sedang menunggu persetujuan admin.');
+        return back()->with('success', 'Terima Kasih atas ulasan anda!');
     }
 }

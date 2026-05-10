@@ -12,7 +12,7 @@
             <span class="material-symbols-outlined text-green-600 text-5xl">check_circle</span>
         </div>
         <h1 class="text-3xl font-bold font-headline text-on-surface mb-3">Pembayaran Berhasil!</h1>
-        <p class="text-on-surface-variant mb-8">Reservasi Anda telah dikonfirmasi. Klik tombol di bawah untuk mengirim konfirmasi ke WhatsApp kami.</p>
+        <p class="text-on-surface-variant mb-8">Pesanan Anda telah dikonfirmasi. Klik tombol di bawah untuk mengirim konfirmasi ke WhatsApp kami.</p>
         
         @elseif($reservation->payment_status === 'pending')
         <!-- PENDING -->
@@ -28,7 +28,7 @@
             <span class="material-symbols-outlined text-red-500 text-5xl">cancel</span>
         </div>
         <h1 class="text-3xl font-bold font-headline text-on-surface mb-3">Pembayaran Belum Selesai</h1>
-        <p class="text-on-surface-variant mb-8">Transaksi Anda belum berhasil. Silakan coba lagi untuk menyelesaikan reservasi.</p>
+        <p class="text-on-surface-variant mb-8">Transaksi Anda belum berhasil. Silakan coba lagi untuk menyelesaikan order.</p>
         @endif
 
         <!-- Detail Reservasi -->
@@ -49,10 +49,12 @@
                 <span class="text-on-surface-variant font-label">Waktu</span>
                 <span class="font-semibold text-on-surface">{{ $reservation->time }}</span>
             </div>
+            @if($reservation->pax)
             <div class="flex justify-between items-center text-sm">
                 <span class="text-on-surface-variant font-label">Kapasitas</span>
                 <span class="font-semibold text-on-surface">{{ $reservation->pax }}</span>
             </div>
+            @endif
             <div class="border-t border-surface-container-highest pt-3 flex justify-between items-center">
                 <span class="text-on-surface-variant font-label text-sm">Total</span>
                 <span class="text-primary font-bold text-lg">Rp {{ number_format($reservation->total_price, 0, ',', '.') }}</span>
@@ -77,10 +79,10 @@
                 KIRIM KONFIRMASI VIA WHATSAPP
             </a>
             @endif
-            <a href="/reservasi"
+            <a href="/menu"
                class="w-full py-3 border border-outline text-on-surface font-semibold font-label text-sm rounded-full flex items-center justify-center gap-2 hover:bg-surface-container transition">
                 <span class="material-symbols-outlined text-base">arrow_back</span>
-                Kembali ke Halaman Reservasi
+                Kembali ke Halaman Menu
             </a>
         </div>
     </div>
